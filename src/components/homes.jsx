@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Dialog, DialogContent } from "@material-ui/core";
 import ApiClient from "./../services/api-client";
 import bookingDialogService from "./../services/booking-dialog-service";
+import HomeBooking from "./home-booking";
 
 const Homes = () => {
   const [homes, setHomes] = useState([]);
@@ -58,12 +59,14 @@ const Homes = () => {
         );
       })}
       <Dialog
+        maxWidth="xs"
+        fullWidth={true}
         open={bookingDialogState.open}
         onClose={() => bookingDialogService.close()}
       >
         <DialogContent>
           Dialog!
-          {bookingDialogState.home ? bookingDialogState.home.title : null}
+          <HomeBooking home={bookingDialogState.home} />
         </DialogContent>
       </Dialog>
     </div>
