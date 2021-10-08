@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
+import ApiClient from "./../services/api-client";
 
 const HomeBooking = (props) => {
   const [checkInState, setCheckInState] = useState();
@@ -27,6 +28,10 @@ const HomeBooking = (props) => {
     return <div data-testid="empty"></div>;
   }
 
+  const handleBooking = () => {
+    ApiClient.bookHome(props.home, checkInState, checkOutState);
+  };
+
   return (
     <div>
       <div data-testid="title">{props.home.title}</div>
@@ -42,6 +47,9 @@ const HomeBooking = (props) => {
         onChange={(e) => setCheckOutState(e.target.value)}
       />
       <div data-testid="total">{totalPriceState}</div>
+      <button data-testid="book-btn" onClick={handleBooking}>
+        Book
+      </button>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React from "react";
 import { fireEvent, render, getByTestId } from "@testing-library/react";
 import HomeBooking from "./home-booking";
+import ApiClient from "./../services/api-client";
 
 let container = null;
 
@@ -51,4 +52,29 @@ it("should calculate total", () => {
 
   // assert the total: 3*125=375
   expect(getByTestId(container, "total").textContent).toBe("375");
+});
+
+it("should book home after clicking the Book button", () => {
+  // spy on apiClient
+  jest.spyOn(ApiClient, "bookHome").mockImplementation(() => {
+    return Promise.resolve();
+  });
+
+  // select dates
+  fireEvent.change(getByTestId(container, "check-in"), {
+    target: { value: "2020-12-04" },
+  });
+  fireEvent.change(getByTestId(container, "check-out"), {
+    target: { value: "2020-12-07" },
+  });
+
+  // click the Book button
+  getByTestId(container, "book-btn").click();
+
+  // assert that apiClient booked the home
+  expect(ApiClient.bookHome).toHaveBeenCalledWith(
+    mockedHome,
+    "2020-12-04",
+    "2020-12-07"
+  );
 });
